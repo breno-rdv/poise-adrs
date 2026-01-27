@@ -1,19 +1,20 @@
-# 0001. Overall architecture for Poise Platfom
+# 0001. Overall Architecture for Poise Platform
 
 Date: 2026-01-14
 
 ## Status
 
-Proposed
+Approved
 
 ## Context
-Before initiating the architectural design process, it is essential to determine the anticipated workload for our system. To do so, we will need to conduct benchmark tests and derive a precise figure.
 
-Our system is designed to accommodate a specific number of users and volume of data;
-Dealers - 10,000
-Customers - 5,000,000
-Cars - 500,000
-Cars per Dealer - 50 average
+Before initiating the architectural design process, it is essential to determine the anticipated workload for our system. We have defined the following scale metrics:
+
+**System Scale:**
+- Dealers: 10,000
+- Customers: 5,000,000
+- Cars: 500,000
+- Cars per Dealer: 50 (average)
 
 ### Requests per second (RPS) calculation
 
@@ -26,27 +27,31 @@ DAU - Daily active users (varies based on industry)
 **Each session will generate 30 requests (search, book, change)**
 
 ```
-5,000,000 customers * 0,25 = 1,250,000 daily active users
-10,000 dealers * 0.5 = 5,000 daily active users
+5,000,000 customers × 0.25 = 1,250,000 daily active users
+10,000 dealers × 0.50 = 5,000 daily active users
 
-1,255,000 * 30 = 37,500,000 requests per day
+Total DAU: 1,255,000 users
+1,255,000 × 30 requests/session = 37,500,000 requests per day
 
-RPS = 37,500,000 / 84,000 (seconds/day) = ~450
+Baseline RPS: 37,500,000 ÷ 86,400 (seconds/day) ≈ 434 RPS
 
-Supposing high traffic in weekends / holidays
-6x more = 2,700 requests per second
+Peak traffic (weekends/holidays with 6× multiplier):
+434 × 6 ≈ 2,600 RPS
 ```
 
-At a higher traffic the system will have to deal with 2,700 tps.
+The system must handle peak traffic of approximately **2,600 requests per second**.
 
 ## Functional Requirements
 
-- Dealers can add cars for sale only recording a video describing its features, uploading it to its whatsapp business account
-- Dealers can manage (add/modify/delete) a car
-- Dealers can rent a car for a desired periord
-- Customers can rent a car
-- Customers can schedule a visit for the dealer to come by and showcase the car at their location
-- Customer can give offers to a car that is on sale
+**Dealer Functions:**
+- Add cars for sale by recording a video describing features and uploading to WhatsApp Business
+- Manage cars (add, modify, delete)
+- Rent cars for desired periods
+
+**Customer Functions:**
+- Rent cars
+- Schedule visits for dealers to showcase cars at their location
+- Make offers on cars for sale
 
 ## Non-Functional Requirements
 
@@ -58,12 +63,11 @@ At a higher traffic the system will have to deal with 2,700 tps.
 
 ### 1.2 Latency
 
-- Read operations with:
-- **p95 ≤ 150 ms**
+**Read Operations:**
+- p95 ≤ **150 ms**
+- p99 ≤ **250 ms**
 
-- **p99 ≤ 250 ms**
-
-- Low global latency:
+**Global Distribution:**
 - Global p95 ≤ **200 ms**
 
 ### 1.3 Scalability
@@ -90,39 +94,45 @@ At a higher traffic the system will have to deal with 2,700 tps.
 - Granular IAM
 
 ## Decision
-Taking into account all the functional and non-functional requirements, microservices architecture will be used for this solution, as some functionalities will handle higher workloads than others, moreover some services will require specific lnaguage to be more performant.
+
+We have chosen **microservices architecture** for this solution based on the following rationale:
+
+- Different services handle significantly varied workloads, requiring independent scaling
+- Specific services benefit from language/technology optimization for performance
+- Functional complexity warrants service decomposition
+- Independent deployment and operational requirements across services
 
 ## Consequences
 
 ### Positive
-- It service can scale independently
-- Independent deploys for each service
-- Reduced Blast radius
-- Independent technology per service requirement
+- Services scale independently based on demand
+- Independent deployment pipelines per service
+- Reduced blast radius for failures
+- Technology flexibility—each service can use optimal language/framework
 
 ### Negative
 
-- Operational overhead
-- Async and sync communication management
-- Manage failures
-- Troubleshooting
-- Quality assurance
-- Automated tests
+- Increased operational complexity and infrastructure overhead
+- Complex inter-service communication patterns (async/sync)
+- Distributed system failure scenarios and handling
+- End-to-end troubleshooting across service boundaries
+- Elevated QA complexity and test coverage requirements
+- Additional effort for automated and integration testing
 
 ### Neutral
 
-- Team size
+- Team size and structure (can adapt to microservices with appropriate organization)
 
 ## Alternatives Considered
 
 ### Monolith
 
-The monolith approach can increase costs, and also become a big ball of mud, as the system will have many features.
+**Rejected.** While simpler initially, a monolithic approach would become difficult to maintain as the system grows. The varied workload requirements and performance needs across different features (dealer operations vs. customer search) would create resource contention and make targeted scaling impossible. Long-term cost would increase significantly.
 
-### Modular Monolith featuring Clean Architecture
+### Modular Monolith with Clean Architecture
 
-There will be some services that require some specific technologies to be more performant, as well as some feature will have less complexity when using a specific database.
+**Rejected.** Although cleaner than a traditional monolith, this approach would not allow independent technology choices where performance is critical (e.g., specific languages or databases for particular services). Additionally, deployment remains coupled, limiting our ability to iterate on individual features independently.
 
 ## References
 
-- https://fidelissauro.dev/monolitos-microservicos/
+- [Monolith vs Microservices](https://fidelissauro.dev/monolitos-microservicos/)
