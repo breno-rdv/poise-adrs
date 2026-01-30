@@ -16,7 +16,9 @@ Following the decision to adopt microservices architecture (ADR 0001), we need t
 
 ## Decision
 
-[Describe the decision that was made. Be clear and concise about what will be done.]
+After having the core functionalities, personas and actions identified, we will adopt **Domain-Driven Design** principles to define service boundaries and establish the following **Bounded Contexts**:
+
+![domain-services](../../images/domain-services.png)
 
 ## Consequences
 
