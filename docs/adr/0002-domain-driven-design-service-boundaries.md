@@ -20,6 +20,9 @@ After having the core functionalities, personas and actions identified, we will 
 
 ![domain-services](../../images/domain-services.png)
 
+### Services and responsabilities
+- Advertising Service (AI pipeline): Extracts audio and images from video recording, and provides vehicle details and metadata.
+
 ## Consequences
 
 ### Positive
