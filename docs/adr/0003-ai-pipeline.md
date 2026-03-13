@@ -18,13 +18,11 @@ Dealers will submit a video describing a car they want to advertise. The platfor
 - Extracted media and text may contain sensitive or regulated content such as license plates, personal details, or dealership-specific notes.
 - The pipeline must produce outputs that other services can consume asynchronously, including vehicle metadata and generated listing assets.
 
-The current draw.io design in `resources/ai-pipeline.drawio` already points to an asynchronous AWS-oriented flow using API Gateway, queueing, Lambda-based workers, object storage, transcription, foundation-model inference, and domain events. We need to formalize that architecture as a decision record and capture the operating safeguards that make it production-ready.
-
 ## Decision
 
 We will implement the AI advertising workflow as an **event-driven pipeline** within the Advertising Service, with durable media storage, asynchronous processing stages, and explicit output events for downstream consumers.
 
-### Pipeline shape
+### System Design
 
 The pipeline will follow these stages:
 
@@ -39,6 +37,7 @@ The pipeline will follow these stages:
    - vision-derived vehicle metadata and feature detection
    - listing descriptions and tags from the combined prompt context
 5. A publication step stores the approved artifacts and emits domain events such as `CarMetadataCreated` and `CarDataCreated`.
+6. All the steps will be coordinated using a a hibrid approach, using orchestration and Ledger pattern.
 
 ### Architectural rules
 
