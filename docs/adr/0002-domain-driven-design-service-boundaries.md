@@ -51,7 +51,7 @@ We will organize the Poise platform into business-aligned bounded contexts, with
 - **Customer Service:** Owns customer profile, customer preferences, and customer-facing identity needed by renting, buying, notifications, and payment-related interactions.
 - **Advertising Service (AI pipeline):** Processes dealer-provided media, extracts vehicle information, and produces structured listing assets and metadata that enrich inventory records. This service is the bounded context formalized in more detail by ADR 0003.
 - **Rental Service:** Owns the rental lifecycle, including rental intent, reservation rules, rental state transitions, and interactions with inventory availability and payments.
-- **Buying Service:** Owns the purchase lifecycle, including buying intent, visit scheduling support, and sale-oriented workflow steps that depend on inventory and customer information.
+- **Sales Service:** Owns the purchase lifecycle, including buying intent, visit scheduling support, and sale-oriented workflow steps that depend on inventory and customer information.
 - **Payment Service:** Owns payment execution and payment-state tracking for rental and purchase flows. It isolates integration with external payment providers from the rest of the domain.
 - **Notification Service:** Owns outbound communication concerns such as alerts, confirmations, and workflow notifications triggered by other services.
 
@@ -59,7 +59,7 @@ We will organize the Poise platform into business-aligned bounded contexts, with
 
 - The **Inventory Service** remains central because rent and sale workflows depend on a shared understanding of vehicle state.
 - The **Dealer Service** and **Customer Service** act as supporting contexts that provide actor-specific information to the transactional domains.
-- **Rental Service** and **Buying Service** remain separate because they have different rules, timelines, and success criteria even though both operate on vehicles.
+- **Rental Service** and **Sales Service** remain separate because they have different rules, timelines, and success criteria even though both operate on vehicles.
 - **Payment Service** and **Notification Service** stay separated from the transaction domains to avoid mixing external integration concerns with core business rules.
 - The platform will support both **synchronous** and **asynchronous** flows, using event-driven architecture where eventual consistency is acceptable and immediate response is not required.
 

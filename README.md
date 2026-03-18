@@ -10,12 +10,17 @@ This repository contains Architecture Decision Records (ADRs) for the Poise plat
 
 ```
 docs/
+  system-requirements.md    # Platform problem statement: scale model, functional & non-functional requirements
   adr/
     adr-template.md           # Template for creating new ADRs
     0001-[title].md           # Individual ADR files
     0002-[title].md
     ...
 ```
+
+## Problem Statement
+
+Before reading any ADR, start with the **[System Requirements](docs/system-requirements.md)**. It defines the platform scale model, functional requirements, and non-functional requirements (availability, latency, scalability, resilience, security) that motivate every architectural decision in this repository.
 
 ## Creating a New ADR
 
