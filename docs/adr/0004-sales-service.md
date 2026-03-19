@@ -1,6 +1,6 @@
 # 0004. Sales Service Integration and Responsibilities
 
-Date: 2026-03-17
+Date: 2026-03-18
 
 ## Status
 
@@ -9,6 +9,10 @@ Proposed
 ## Context
 
 As defined in ADR 0002 (Domain-Driven Design Service Boundaries) and ADR 0003 (AI Pipeline), we need to establish a clear architecture for the Sales Service, including its responsibilities, domain events, and integration patterns. The Sales Service must handle customer interactions, coordinate with inventory management, and maintain a read model for the UX layer.
+
+Sales service must handle concurrent schedules, schedule blockes (car could be set to sold at the same time), and more important the flow rely on confirmation from dealer for schedule to be finished.
+
+Once again, as ADR 0002 states, **Sales Service** owns the purchase lifecycle, including buying intent, visit scheduling support, and sale-oriented workflow steps that depend on inventory and customer information.
 
 ## Responsibilities
 
@@ -22,7 +26,7 @@ The Sales Service is responsible for:
 
 ## Decision
 
-The Sales Service will implement a **Command-Query Responsibility Segregation (CQRS) pattern** with event sourcing through Kafka:
+TBD
 
 ### Architecture Flow
 
