@@ -83,6 +83,10 @@ Idempotency keys are applied on all commands to handle retries and at-least-once
        └──────── UX reads from Sales Read Model (low-latency)
 ```
 
+### Architecture overview
+
+![architecture-overview](../../resources/sales-service-design.drawio)
+
 ### Key Design Decisions
 
 1. **gRPC with BFF**: The Sales Service exposes a gRPC interface consumed by the BFF layer, which translates to REST/JSON for the frontend. This separates internal service communication from the public API contract.
